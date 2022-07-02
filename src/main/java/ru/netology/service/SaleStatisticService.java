@@ -20,32 +20,11 @@ public class SaleStatisticService {
 
     public int numberMonthWithMaxSales(int[] sales) {
 
-        return numberMonthWithSalesByCriteria(sales, true);
-    }
-
-    public int numberMonthWithMinSales(int[] sales) {
-
-        return numberMonthWithSalesByCriteria(sales, false);
-    }
-
-    public int countMonthWithSalesLessAverage(int[] sales) {
-
-        return numberMonthWithCompareAverage(sales, false);
-    }
-
-    public int countMonthWithSalesGrateAverage(int[] sales) {
-
-        return numberMonthWithCompareAverage(sales, true);
-    }
-
-    private int numberMonthWithSalesByCriteria(int[] sales, boolean isMax) {
-
         int numberMonth = 0;
 
         for (int index = 0; index < sales.length; index++) {
 
-            if (isMax && sales[index] > sales[numberMonth] ||
-                    !isMax && sales[index] <= sales[numberMonth]) {
+            if (sales[index] >= sales[numberMonth]) {
 
                 numberMonth = index;
             }
@@ -54,15 +33,45 @@ public class SaleStatisticService {
         return numberMonth + 1;
     }
 
-    private int numberMonthWithCompareAverage(int[] sales, boolean isGrate) {
+    public int numberMonthWithMinSales(int[] sales) {
+
+        int numberMonth = 0;
+
+        for (int index = 0; index < sales.length; index++) {
+
+            if (sales[index] <= sales[numberMonth]) {
+
+                numberMonth = index;
+            }
+        }
+
+        return numberMonth + 1;
+    }
+
+    public int countMonthWithSalesLessAverage(int[] sales) {
 
         int mouthCount = 0;
         int averageSale = averageSalesAmount(sales);
 
         for (int sale : sales) {
 
-            if (isGrate && sale >= averageSale ||
-                    !isGrate && sale < averageSale) {
+            if (sale < averageSale) {
+
+                mouthCount += 1;
+            }
+        }
+
+        return mouthCount;
+    }
+
+    public int countMonthWithSalesGrateAverage(int[] sales) {
+
+        int mouthCount = 0;
+        int averageSale = averageSalesAmount(sales);
+
+        for (int sale : sales) {
+
+            if (sale > averageSale) {
 
                 mouthCount += 1;
             }
